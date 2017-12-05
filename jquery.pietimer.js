@@ -51,7 +51,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
     var PI_BY_180 = Math.PI / 180;
 
-    var PieTimer = function (jquery_object, settings, callback) {
+    var PieTimer = function (jquery_object, settings, callback, accrued_time) {
         if (settings.width === null) {
             settings.width = jquery_object.width();
         }
@@ -64,7 +64,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         this.interval_id = null;
         this.current_value = DEFAULT_VALUE;
 				this.initial_time = new Date();
-				this.accrued_time = 0;
+				this.accrued_time = accrued_time || 0;
         this.callback = callback;
         this.is_paused = true;
 				this.is_reversed = typeof settings.is_reversed != 'undefined' ? settings.is_reversed : false;
@@ -154,12 +154,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         }
     };
 
-    var create_timer = function (options, callback) {
+    var create_timer = function (options, callback, accrued_time) {
         var settings = $.extend({}, DEFAULT_SETTINGS, options);
 
         return this.each(function () {
             var $element = $(this);
-            var pie_timer = new PieTimer($element, settings, callback);
+            var pie_timer = new PieTimer($element, settings, callback, accrued_time);
             $element.data(PIE_TIMER_DATA_NAME, pie_timer);
         });
     };
